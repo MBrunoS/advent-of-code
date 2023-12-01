@@ -5,9 +5,23 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 )
 
 func main() {
+	numberWords := map[string]string{
+		"zero":  "z0o",
+		"one":   "o1e",
+		"two":   "t2o",
+		"three": "t3e",
+		"four":  "f4r",
+		"five":  "f5e",
+		"six":   "s6x",
+		"seven": "s7n",
+		"eight": "e8t",
+		"nine":  "n9e",
+	}
+
 	file, err := os.Open("input.txt")
 	if err != nil {
 		log.Fatal(err)
@@ -21,6 +35,10 @@ func main() {
 	for scanner.Scan() {
 		var digits [2]rune
 		line := scanner.Text()
+
+		for word, digit := range numberWords {
+			line = strings.ReplaceAll(line, word, digit)
+		}
 
 		for _, c := range line {
 			if c >= '0' && c <= '9' {
