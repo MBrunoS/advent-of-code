@@ -31,7 +31,7 @@ func main() {
 		return
 	}
 
-	log.Fatal("Please specify which part of the challenge to run (1 or 2) as an argument.")
+	part1(scanner)
 }
 
 func getIdAndSets(line string) (int, []string) {

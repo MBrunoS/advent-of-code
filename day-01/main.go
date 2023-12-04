@@ -2,14 +2,13 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"log"
 	"os"
-	"strings"
+	"strconv"
 )
 
 func main() {
-	file, err := os.Open("input.txt")
+	file, err := os.Open("day-01-input.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -17,57 +16,44 @@ func main() {
 
 	scanner := bufio.NewScanner(file)
 
-	sum := 0
-	numberWords := map[string]string{
-		"zero":  "z0o",
-		"one":   "o1e",
-		"two":   "t2o",
-		"three": "t3e",
-		"four":  "f4r",
-		"five":  "f5e",
-		"six":   "s6x",
-		"seven": "s7n",
-		"eight": "e8t",
-		"nine":  "n9e",
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
 	}
 
-	for scanner.Scan() {
-		line := scanner.Text()
-		line = replaceWordsWithNumbers(line, numberWords)
-		num := extractNumber(line)
-		sum += num
+	if (len(os.Args) > 1) && (os.Args[1] == "1") {
+		part1(scanner)
+		return
 	}
 
-	fmt.Println(sum)
+	if (len(os.Args) > 1) && (os.Args[1] == "2") {
+		part2(scanner)
+		return
+	}
+
+	part1(scanner)
 
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
 }
 
-func replaceWordsWithNumbers(line string, numberWords map[string]string) string {
-	for word, number := range numberWords {
-		line = strings.ReplaceAll(line, word, number)
-	}
-	return line
-}
-
 func extractNumber(line string) int {
-	var digits [2]rune
+	var first_digit, sec_digit string
 
 	for _, c := range line {
 		if c >= '0' && c <= '9' {
-			if digits[0] == 0 { // first digit found
-				digits[0] = c
-			} else { // second+ digit found
-				digits[1] = c
+			if first_digit == "" {
+				first_digit = string(c)
+			} else {
+				sec_digit = string(c)
 			}
 		}
 	}
 
-	if digits[1] == 0 { // only one digit found
-		digits[1] = digits[0]
+	if sec_digit == "" {
+		sec_digit = first_digit
 	}
 
-	return int(digits[0]-'0')*10 + int(digits[1]-'0') // convert runes to int
+	num, _ := strconv.Atoi(first_digit + sec_digit)
+	return num
 }
