@@ -1,41 +1,21 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 )
 
-func part1(scanner *bufio.Scanner) {
-	var prevLine, line, nextLine string
+func part1(lines []string) {
 	sum := 0
 
-	scanner.Scan()
-	nextLine = scanner.Text()
-
-	for scanner.Scan() {
-		prevLine = line
-		line = nextLine
-		nextLine = scanner.Text()
-		occurrences := getNumberOccurrences(line)
+	for i := 0; i < len(lines); i++ {
+		occurrences := getNumberOccurrences(lines[i])
 
 		for _, occ := range occurrences {
-			if isPartNumber(occ, prevLine, line, nextLine) {
+			if isPartNumber(occ, lines, i) {
 				sum += occ.number
 			}
 		}
 
-	}
-
-	prevLine = line
-	line = nextLine
-	nextLine = ""
-
-	occurrences := getNumberOccurrences(line)
-
-	for _, occ := range occurrences {
-		if isPartNumber(occ, prevLine, line, nextLine) {
-			sum += occ.number
-		}
 	}
 
 	fmt.Println("Part 1: ", sum)

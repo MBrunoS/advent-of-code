@@ -1,8 +1,26 @@
 package main
 
 import (
+	"bufio"
+	"os"
 	"strconv"
 )
+
+func readLinesFrom(path string) ([]string, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	var lines []string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+
+	return lines, scanner.Err()
+}
 
 func isDigit(c byte) bool {
 	return c >= '0' && c <= '9'
@@ -45,8 +63,23 @@ func getNumberOccurrences(line string) []NumberOcurrence {
 	return numbers
 }
 
-func isPartNumber(occ NumberOcurrence, prevLine, line, nextLine string) bool {
+func isPartNumber(occ NumberOcurrence, lines []string, lineIndex int) bool {
 	var startIndex, endIndex int
+	var prevLine, nextLine string
+
+	line := lines[lineIndex]
+
+	if lineIndex > 0 {
+		prevLine = lines[lineIndex-1]
+	} else {
+		prevLine = ""
+	}
+
+	if lineIndex < len(lines)-1 {
+		nextLine = lines[lineIndex+1]
+	} else {
+		nextLine = ""
+	}
 
 	if occ.startIndex == 0 {
 		startIndex = occ.startIndex
