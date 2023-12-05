@@ -20,21 +20,12 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if (len(os.Args) > 1) && (os.Args[1] == "1") {
-		part1(scanner)
-		return
-	}
-
 	if (len(os.Args) > 1) && (os.Args[1] == "2") {
 		part2(scanner)
 		return
 	}
 
 	part1(scanner)
-
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
 }
 
 func extractNumber(line string) int {

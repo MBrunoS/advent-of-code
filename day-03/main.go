@@ -12,11 +12,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if (len(os.Args) > 1) && (os.Args[1] == "1") {
-		part1(lines)
-		return
-	}
-
 	if (len(os.Args) > 1) && (os.Args[1] == "2") {
 		part2(lines)
 		return
